@@ -19,14 +19,16 @@ public abstract class Message implements Serializable {
     public static int ChatAllResponseMessage = 3;
 
     public static int ChatToOneRequestMessage = 4;
-
     public static int ChatToOneResponseMessage = 5;
     private static final Map<Integer, Class<?>> messageClasses = new HashMap<>();
 
+    // 添加完常量之后 必须 添加进map里面取
     static {
         messageClasses.put(LoginRequestMessage, LoginRequestMessage.class);
         messageClasses.put(LoginResponseMessage, LoginResponseMessage.class);
         messageClasses.put(ChatAllRequestMessage, ChatAllRequestMessage.class);
         messageClasses.put(ChatAllResponseMessage, ChatAllResponseMessage.class);
+        messageClasses.put(ChatToOneRequestMessage, ChatToOneRequestMessage.class);
+        messageClasses.put(ChatToOneResponseMessage, ChatToOneResponseMessage.class);
     }
 }

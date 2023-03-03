@@ -53,8 +53,8 @@ public class MessageCodec extends MessageToMessageCodec<ByteBuf, Message> {
         byte[] bytes = new byte[length];
         in.readBytes(bytes, 0, length);
 
-        // System.out.println("json :" + json);
         String json = new String(bytes, StandardCharsets.UTF_8);
+        System.out.println("json :" + json);
         Class<?> messageClass = Message.getMessageClass(msgType);
         Object msg = new Gson().fromJson(json, messageClass);
 

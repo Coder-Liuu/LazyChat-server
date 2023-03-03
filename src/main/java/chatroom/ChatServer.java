@@ -1,6 +1,7 @@
 package chatroom;
 
 import chatroom.message.ChatAllRequestMessage;
+import chatroom.message.ChatToOneRequestMessage;
 import chatroom.message.LoginRequestMessage;
 import chatroom.message.LoginResponseMessage;
 import chatroom.protocol.MessageCodec;
@@ -44,14 +45,25 @@ public class ChatServer {
                                 }else {
                                     loginResponseMessage = new LoginResponseMessage(false, "用户名或密码不正确");
                                 }
+                                System.out.println("loginResponseMessage --------------> " + loginResponseMessage.getMessageType());
                                 ctx.channel().writeAndFlush(loginResponseMessage);
                             }
                         });
+                        // 处理全部聊天的业务
                         pipeline.addLast(new SimpleChannelInboundHandler<ChatAllRequestMessage>() {
                             @Override
                             protected void channelRead0(ChannelHandlerContext ctx, ChatAllRequestMessage msg) throws Exception {
                                 System.out.println(msg);
                                 ChatServiceFactory.getChatService().ChatAll(msg.getContent(), msg.getUsername());
+                            }
+                        });
+                        // 处理私聊的业务
+                        pipeline.addLast(new SimpleChannelInboundHandler<ChatToOneRequestMessage>() {
+                            @Override
+                            protected void channelRead0(ChannelHandlerContext ctx, ChatToOneRequestMessage msg) throws Exception {
+                                System.out.println(msg);
+                                ChatServiceFactory.getChatService().ChatToOne(msg.getFrom_user(), msg.getTo_user(),
+                                    msg.getContent());
                             }
                         });
                     }

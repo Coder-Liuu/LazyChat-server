@@ -9,4 +9,5 @@ public interface ChatService {
      * @param username 用户名
      */
     void ChatAll(String content, String username);
+    void ChatToOne(String from_user, String to_user, String content);
 }
