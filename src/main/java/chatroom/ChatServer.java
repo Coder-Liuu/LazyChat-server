@@ -1,9 +1,14 @@
 package chatroom;
 
+import chatroom.message.ChatAllRequestMessage;
 import chatroom.message.LoginRequestMessage;
 import chatroom.message.LoginResponseMessage;
 import chatroom.protocol.MessageCodec;
+import chatroom.service.ChatService;
+import chatroom.service.ChatServiceFactory;
 import chatroom.service.UserServiceFactory;
+import chatroom.session.Session;
+import chatroom.session.SessionFactory;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -32,14 +37,21 @@ public class ChatServer {
                             @Override
                             protected void channelRead0(ChannelHandlerContext ctx, LoginRequestMessage msg) throws Exception {
                                 boolean login = UserServiceFactory.getUserService().login(msg.getUsername(), msg.getPassword());
-                                System.out.println("msg: " + msg);
                                 LoginResponseMessage loginResponseMessage;
                                 if(login) {
-                                    loginResponseMessage = new LoginResponseMessage(true, "ok");
+                                    loginResponseMessage = new LoginResponseMessage(true, "欢迎你:" + msg.getUsername());
+                                    SessionFactory.getSession().bind(ctx.channel(), msg.getUsername());
                                 }else {
                                     loginResponseMessage = new LoginResponseMessage(false, "用户名或密码不正确");
                                 }
                                 ctx.channel().writeAndFlush(loginResponseMessage);
+                            }
+                        });
+                        pipeline.addLast(new SimpleChannelInboundHandler<ChatAllRequestMessage>() {
+                            @Override
+                            protected void channelRead0(ChannelHandlerContext ctx, ChatAllRequestMessage msg) throws Exception {
+                                System.out.println(msg);
+                                ChatServiceFactory.getChatService().ChatAll(msg.getContent(), msg.getUsername());
                             }
                         });
                     }

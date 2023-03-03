@@ -2,7 +2,9 @@ package chatroom.session;
 
 import io.netty.channel.Channel;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SessionMemoryImpl implements Session{
@@ -24,5 +26,9 @@ public class SessionMemoryImpl implements Session{
     @Override
     public Channel getChannel(String username) {
         return usernameChannelMap.get(username);
+    }
+
+    public Set<Channel> getChannels() {
+        return channelUsernameMap.keySet();
     }
 }
