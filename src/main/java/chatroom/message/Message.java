@@ -6,6 +6,7 @@ import java.util.Map;
 
 public abstract class Message implements Serializable {
     private int messageType;
+
     public abstract int getMessageType();
 
     public static Class<?> getMessageClass(int messageType) {
@@ -20,6 +21,8 @@ public abstract class Message implements Serializable {
 
     public static int ChatToOneRequestMessage = 4;
     public static int ChatToOneResponseMessage = 5;
+    public static int NoticeRequestMessage = 6;
+    public static int NoticeResponseMessage = 7;
     private static final Map<Integer, Class<?>> messageClasses = new HashMap<>();
 
     // 添加完常量之后 必须 添加进map里面取
@@ -30,5 +33,8 @@ public abstract class Message implements Serializable {
         messageClasses.put(ChatAllResponseMessage, ChatAllResponseMessage.class);
         messageClasses.put(ChatToOneRequestMessage, ChatToOneRequestMessage.class);
         messageClasses.put(ChatToOneResponseMessage, ChatToOneResponseMessage.class);
+        // 通知
+        messageClasses.put(NoticeRequestMessage, NoticeRequestMessage.class);
+        messageClasses.put(NoticeResponseMessage, NoticeResponseMessage.class);
     }
 }

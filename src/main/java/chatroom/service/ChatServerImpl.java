@@ -12,16 +12,22 @@ public class ChatServerImpl implements ChatService {
     public void ChatAll(String content, String username) {
         ChatAllResponseMessage resp = new ChatAllResponseMessage(content, username);
         Set<Channel> channels = SessionFactory.getSession().getChannels();
-        for (Channel ch: channels) {
+        for (Channel ch : channels) {
             ch.writeAndFlush(resp);
         }
     }
 
     @Override
     public void ChatToOne(String from_user, String to_user, String content) {
-        ChatToOneResponseMessage resp = new ChatToOneResponseMessage(from_user, to_user, content);
-        System.out.println("---> " + resp);
         Channel channel = SessionFactory.getSession().getChannel(to_user);
-        channel.writeAndFlush(resp);
+
+        if (channel == null) {
+            Channel myChannel = SessionFactory.getSession().getChannel(from_user);
+            ChatToOneResponseMessage resp = new ChatToOneResponseMessage(to_user, from_user, "(自动回复) 我不在线\n");
+            myChannel.writeAndFlush(resp);
+        } else {
+            ChatToOneResponseMessage resp = new ChatToOneResponseMessage(from_user, to_user, content);
+            channel.writeAndFlush(resp);
+        }
     }
 }
