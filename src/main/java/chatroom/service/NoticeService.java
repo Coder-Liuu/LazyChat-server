@@ -12,4 +12,8 @@ public interface NoticeService {
      * @param notice_type
      */
     void NoticeAddUser(String from_user, String to_user, int notice_type);
+    /**
+     * 好友上线
+     */
+    // void Notice
 }
