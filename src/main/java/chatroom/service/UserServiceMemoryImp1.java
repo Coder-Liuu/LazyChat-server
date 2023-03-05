@@ -3,7 +3,7 @@ package chatroom.service;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class UserServiceMemoryImpl implements UserService{
+public class UserServiceMemoryImp1 implements UserService{
     private Map<String, String> allUserMap = new ConcurrentHashMap<>();
 
     {
