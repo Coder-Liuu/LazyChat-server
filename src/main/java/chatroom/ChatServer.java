@@ -1,9 +1,9 @@
 package chatroom;
 
-import chatroom.handler.ChatAllRequestMessageSimpleChannelInboundHandler;
-import chatroom.handler.ChatToOneRequestMessageSimpleChannelInboundHandler;
-import chatroom.handler.LoginRequestMessageSimpleChannelInboundHandler;
-import chatroom.handler.NoticeRequestMessageSimpleChannelInboundHandler;
+import chatroom.handler.ChatAllHandler;
+import chatroom.handler.ChatToOneHandler;
+import chatroom.handler.LoginHandler;
+import chatroom.handler.NoticeHandler;
 import chatroom.protocol.MessageCodec;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -17,10 +17,10 @@ import lombok.extern.slf4j.Slf4j;
 public class ChatServer {
 
     public static final LoggingHandler LOGGING_HANDLER = new LoggingHandler();
-    public static final LoginRequestMessageSimpleChannelInboundHandler LOGIN_REQUEST_HANDLER = new LoginRequestMessageSimpleChannelInboundHandler();
-    public static final ChatAllRequestMessageSimpleChannelInboundHandler CHATALL_REQUEST_HANDLER = new ChatAllRequestMessageSimpleChannelInboundHandler();
-    public static final ChatToOneRequestMessageSimpleChannelInboundHandler CHAT_TO_ONE_REQUEST_HANDLER = new ChatToOneRequestMessageSimpleChannelInboundHandler();
-    public static final NoticeRequestMessageSimpleChannelInboundHandler NOTICE_REQUEST_HANDLER = new NoticeRequestMessageSimpleChannelInboundHandler();
+    public static final LoginHandler LOGIN_REQUEST_HANDLER = new LoginHandler();
+    public static final ChatAllHandler CHATALL_REQUEST_HANDLER = new ChatAllHandler();
+    public static final ChatToOneHandler CHAT_TO_ONE_REQUEST_HANDLER = new ChatToOneHandler();
+    public static final NoticeHandler NOTICE_REQUEST_HANDLER = new NoticeHandler();
 
     public static void main(String[] args) throws InterruptedException {
         NioEventLoopGroup boss = new NioEventLoopGroup();

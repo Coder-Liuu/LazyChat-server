@@ -1,18 +1,11 @@
 package chatroom.service;
 
-import chatroom.dao.UserDao;
-import chatroom.db.ConnectionFactor;
+import chatroom.dao.UserFriendMapperService;
+import chatroom.dao.UserMapperService;
 import chatroom.message.NoticeResponseMessage;
 import chatroom.session.Session;
 import chatroom.session.SessionFactory;
-import com.alibaba.druid.util.JdbcUtils;
 import io.netty.channel.Channel;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Objects;
 
 
 public class NoticeServiceImpl implements NoticeService {
@@ -20,22 +13,23 @@ public class NoticeServiceImpl implements NoticeService {
     public void NoticeAddUser(String from_user, String to_user, int notice_type) {
         Session session = SessionFactory.getSession();
         if(notice_type == 1) {
-            if(UserDao.getByUsername(to_user) == -1) {
+            if(UserMapperService.getIdByUsername(to_user) == -1) {
                 // 用户不存在
                 return ;
             }
+            // 如果在线直接转发
             Channel ch = session.getChannel(to_user);
+            // 数据库操作
+            UserFriendMapperService.insertStatus(from_user, to_user, "pending");
             if (ch != null) {
-                // 数据库操作
-                UserDao.insertStatus(from_user, to_user, "pending");
                 // Socket操作
                 NoticeResponseMessage msg = new NoticeResponseMessage(1, from_user, to_user, "");
                 ch.writeAndFlush(msg);
             }
         }else if(notice_type == 2) {
             // 数据库操作
-            UserDao.updatePending(from_user, to_user);
-            UserDao.insertStatus(to_user, from_user, "friend");
+            UserFriendMapperService.updatePending(from_user, to_user);
+            UserFriendMapperService.insertStatus(to_user, from_user, "friend");
             // Socket操作 两方都确认了，服务器给两方都发送添加成功的请求
             Channel ch_to_user = session.getChannel(to_user);
             Channel ch_from_user = session.getChannel(from_user);

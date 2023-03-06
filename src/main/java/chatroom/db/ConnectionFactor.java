@@ -12,5 +12,4 @@ public class ConnectionFactor {
     static public Connection getConnection() throws SQLException {
         return mySQLPool.dataSource.getConnection();
     }
-
 }

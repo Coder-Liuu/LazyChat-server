@@ -7,7 +7,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 @ChannelHandler.Sharable
-public class ChatAllRequestMessageSimpleChannelInboundHandler extends SimpleChannelInboundHandler<ChatAllRequestMessage> {
+public class ChatAllHandler extends SimpleChannelInboundHandler<ChatAllRequestMessage> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ChatAllRequestMessage msg) throws Exception {
         System.out.println(msg);
