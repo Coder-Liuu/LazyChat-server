@@ -94,6 +94,17 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public void NoticeRemoveUser(String from_user, String to_user) {
         Session session = SessionFactory.getSession();
-        NoticeResponseMessage msg = new NoticeResponseMessage(Constant.NOTICE_FRIEND_REMOVE, from_user, to_user, "");
+        if(UserMapperService.getIdByUsername(to_user) == -1) {
+            Channel ch = session.getChannel(from_user);
+            NoticeResponseMessage msg = new NoticeResponseMessage(Constant.NOTICE_FRIEND_REMOVE, to_user, from_user, "删除失败，因为用户不存在");
+            ch.writeAndFlush(msg);
+            // 用户不存在
+            return ;
+        }
+        UserFriendMapperService.removeFriends(from_user, to_user);
+        NoticeResponseMessage msg_from = new NoticeResponseMessage(Constant.NOTICE_FRIEND_REMOVE, to_user, from_user, "。删除成功");
+        session.getChannel(from_user).writeAndFlush(msg_from);
+        NoticeResponseMessage msg_to = new NoticeResponseMessage(Constant.NOTICE_FRIEND_REMOVE, from_user, to_user, "。偷偷把你删除了");
+        session.getChannel(to_user).writeAndFlush(msg_to);
     }
 }

@@ -28,4 +28,7 @@ public interface UserFriendMapper {
 
     @Select("SELECT * FROM user_friends WHERE user_id = #{user_id} AND notice = 1")
     List<UserFriend> getNotices(@Param("user_id") int user_id);
+
+    @Delete("DELETE FROM user_friends WHERE user_id = #{user_id} AND friend_id = #{friend_id}")
+    void removeFriend(@Param("user_id") int user_id, @Param("friend_id") int friend_id);
 }

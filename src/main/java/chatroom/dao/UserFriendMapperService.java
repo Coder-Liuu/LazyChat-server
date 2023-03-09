@@ -92,4 +92,15 @@ public class UserFriendMapperService {
             }).toList();
         }
     }
+
+    public static void removeFriends(String from_user, String to_user) {
+        try(SqlSession session = DBSqlSessionFactor.getSqlSession()) {
+            UserFriendMapper userFriendMapper = session.getMapper(UserFriendMapper.class);
+            int from_id = UserMapperService.getIdByUsername(from_user);
+            int to_id = UserMapperService.getIdByUsername(to_user);
+            userFriendMapper.removeFriend(from_id, to_id);
+            userFriendMapper.removeFriend(to_id, from_id);
+            session.commit();
+        }
+    }
 }
