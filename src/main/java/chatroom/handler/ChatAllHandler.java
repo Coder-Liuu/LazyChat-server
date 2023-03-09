@@ -10,7 +10,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
 public class ChatAllHandler extends SimpleChannelInboundHandler<ChatAllRequestMessage> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ChatAllRequestMessage msg) throws Exception {
-        System.out.println(msg);
         ChatServiceFactory.getChatService().ChatAll(msg.getContent(), msg.getUsername());
     }
 }

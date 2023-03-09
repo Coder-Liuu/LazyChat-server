@@ -18,7 +18,6 @@ public abstract class Message implements Serializable {
     public static int LoginResponseMessage = 1;
     public static int ChatAllRequestMessage = 2;
     public static int ChatAllResponseMessage = 3;
-
     public static int ChatToOneRequestMessage = 4;
     public static int ChatToOneResponseMessage = 5;
     public static int NoticeRequestMessage = 6;

@@ -28,6 +28,8 @@ public interface Session {
      */
     Channel getChannel(String username);
 
+    String getUsername(Channel channel);
+
 
     /**
      * 获取全部在线用户的Channel

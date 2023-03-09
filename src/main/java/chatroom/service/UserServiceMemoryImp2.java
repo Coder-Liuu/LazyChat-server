@@ -8,6 +8,6 @@ public class UserServiceMemoryImp2 implements UserService {
 
     @Override
     public boolean login(String username, String password) {
-        return UserMapperService.UserLogin(username, password);
+        return UserMapperService.userLogin(username, password);
     }
 }

@@ -1,9 +1,6 @@
 package chatroom;
 
-import chatroom.handler.ChatAllHandler;
-import chatroom.handler.ChatToOneHandler;
-import chatroom.handler.LoginHandler;
-import chatroom.handler.NoticeHandler;
+import chatroom.handler.*;
 import chatroom.protocol.MessageCodec;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -21,12 +18,13 @@ public class ChatServer {
     public static final ChatAllHandler CHATALL_REQUEST_HANDLER = new ChatAllHandler();
     public static final ChatToOneHandler CHAT_TO_ONE_REQUEST_HANDLER = new ChatToOneHandler();
     public static final NoticeHandler NOTICE_REQUEST_HANDLER = new NoticeHandler();
+    public static final QuitHandler QUIT_HANDLER = new QuitHandler();
 
     public static void main(String[] args) throws InterruptedException {
         NioEventLoopGroup boss = new NioEventLoopGroup();
         NioEventLoopGroup worker = new NioEventLoopGroup();
 
-        ChannelFuture server = new ServerBootstrap()
+        new ServerBootstrap()
             .channel(NioServerSocketChannel.class)
             .group(boss, worker)
             .childHandler(
@@ -44,6 +42,8 @@ public class ChatServer {
                         pipeline.addLast(CHAT_TO_ONE_REQUEST_HANDLER);
                         // 处理通知类的业务
                         pipeline.addLast(NOTICE_REQUEST_HANDLER);
+                        // 用户下线业务
+                        pipeline.addLast(QUIT_HANDLER);
                     }
                 }
             ).bind(8080).sync();

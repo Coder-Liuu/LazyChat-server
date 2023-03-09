@@ -1,6 +1,5 @@
 package chatroom.dao.mapper;
 
-import chatroom.dao.entity.User;
 import chatroom.dao.entity.UserFriend;
 import org.apache.ibatis.annotations.*;
 
@@ -11,8 +10,11 @@ public interface UserFriendMapper {
     @Insert("INSERT INTO user_friends (user_id, friend_id, status) VALUES (#{user_id}, #{friend_id}, #{status})")
     void insertStatus(@Param("user_id") int user_id, @Param("friend_id") int friend_id, @Param("status") String status);
 
-    @Update("UPDATE user_friends SET status = 'friend' where user_id = #{user_id} and friend_id = #{friend_id}")
-    void updatePending(@Param("user_id") int user_id, @Param("friend_id") int friend_id);
+    @Update("UPDATE user_friends SET status = #{status} where user_id = #{user_id} and friend_id = #{friend_id}")
+    void updatePending(@Param("user_id") int user_id, @Param("friend_id") int friend_id, @Param("status") String status);
+
+    @Update("UPDATE user_friends SET notice = #{status} where user_id = #{user_id} and friend_id = #{friend_id}")
+    void updateNotice(@Param("user_id") int user_id, @Param("friend_id") int friend_id, @Param("status") int status);
 
     @Select("<script>" +
         "SELECT * FROM user_friends WHERE 1 = 1" +
@@ -23,4 +25,7 @@ public interface UserFriendMapper {
     List<UserFriend> getFriends(@Param("user_id") int user_id,
                                 @Param("friend_id") int friend_id,
                                 @Param("status") String status);
+
+    @Select("SELECT * FROM user_friends WHERE user_id = #{user_id} AND notice = 1")
+    List<UserFriend> getNotices(@Param("user_id") int user_id);
 }
