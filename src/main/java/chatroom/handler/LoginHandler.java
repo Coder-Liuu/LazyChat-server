@@ -50,8 +50,11 @@ public class LoginHandler extends SimpleChannelInboundHandler<LoginRequestMessag
         // 给全部好友发送上线通知
         for (String friend : friends) {
             Channel channel = SessionFactory.getSession().getChannel(friend);
-            NoticeResponseMessage online_msg = new NoticeResponseMessage(Constant.NOTICE_ONLINE, msg.getUsername(), friend, "");
-            channel.writeAndFlush(online_msg);
+            // 如果好友上线
+            if(channel != null) {
+                NoticeResponseMessage online_msg = new NoticeResponseMessage(Constant.NOTICE_ONLINE, msg.getUsername(), friend, "");
+                channel.writeAndFlush(online_msg);
+            }
         }
     }
 }

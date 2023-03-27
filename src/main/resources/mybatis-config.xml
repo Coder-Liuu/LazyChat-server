@@ -8,7 +8,7 @@
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.jdbc.Driver"/>
                 <property name="url" value="jdbc:mysql://localhost:3306/chatroom"/>
-                <property name="username" value="root"/>
+                <property name="username" value="chatroom"/>
                 <property name="password" value="liuyang"/>
             </dataSource>
         </environment>
